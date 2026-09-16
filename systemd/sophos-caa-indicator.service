@@ -1,0 +1,17 @@
+[Unit]
+Description=Sophos CAA desktop indicator
+After=graphical-session.target sophos-caa-manager.service
+Wants=sophos-caa-manager.service
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=sophos-caa-indicator
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=default.target
+

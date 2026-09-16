@@ -1,0 +1,18 @@
+[Unit]
+Description=Sophos Client Authentication Agent
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=sophos-caa-run --verbose
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+KillMode=mixed
+TimeoutStopSec=10
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+# This unit is intentionally not installable/enabled. The manager starts it
+# only when the current network is identified as PES.
+

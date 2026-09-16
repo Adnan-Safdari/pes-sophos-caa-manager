@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Unofficial CAA Manager</title>
+  <path fill="#37358f" d="M64 5c17 16 36 23 54 25v38c0 27-18 45-54 56C28 113 10 95 10 68V30c18-2 37-9 54-25z"/>
+  <path fill="#28b8ad" d="M64 17c13 11 28 18 43 21v30c0 20-14 34-43 44-29-10-43-24-43-44V38c15-3 30-10 43-21z"/>
+  <path fill="#238b9a" d="M64 29c10 8 20 13 32 16v23c0 14-10 24-32 32-22-8-32-18-32-32V45c12-3 22-8 32-16z"/>
+  <path fill="none" stroke="#37358f" stroke-linecap="round" stroke-width="8" d="M47 53l32 28"/>
+  <circle cx="43" cy="49" r="11" fill="#28b8ad"/>
+  <circle cx="43" cy="49" r="5" fill="#37358f"/>
+  <circle cx="83" cy="84" r="11" fill="#28b8ad"/>
+  <circle cx="83" cy="84" r="5" fill="#37358f"/>
+  <path fill="none" stroke="#8bc34a" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" d="M70 93l8 8 17-19"/>
+</svg>

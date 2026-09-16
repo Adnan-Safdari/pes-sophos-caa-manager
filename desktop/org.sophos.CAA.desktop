@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Name=Sophos CAA Manager
+GenericName=Network Authentication
+Comment=Show and control the unofficial Sophos CAA desktop indicator
+Exec=sophos-caa show-indicator
+Icon=org.sophos.CAA
+Terminal=false
+StartupNotify=false
+Categories=Network;
+Keywords=Sophos;CAA;PES;Network;Authentication;
+Actions=Reauthenticate;HideIndicator;
+
+[Desktop Action Reauthenticate]
+Name=Re-authenticate CAA
+Exec=sophos-caa reauth
+
+[Desktop Action HideIndicator]
+Name=Hide Indicator
+Exec=sophos-caa hide-indicator
+

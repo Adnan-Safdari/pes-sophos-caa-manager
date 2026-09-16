@@ -1,0 +1,1 @@
+"""Optional desktop frontends."""

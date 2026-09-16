@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sophos-caa-manager"
+version = "0.1.0"
+description = "Lightweight Linux manager for Sophos Client Authentication Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Sophos CAA Manager contributors" }]
+keywords = ["linux", "networkmanager", "systemd", "sophos", "caa"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: X11 Applications :: GTK",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: System :: Networking",
+  "Topic :: Utilities",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Adnan-Safdari/pes-sophos-caa-manager"
+Documentation = "https://github.com/Adnan-Safdari/pes-sophos-caa-manager/tree/main/docs"
+Issues = "https://github.com/Adnan-Safdari/pes-sophos-caa-manager/issues"
+Source = "https://github.com/Adnan-Safdari/pes-sophos-caa-manager"
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.8",
+  "pytest>=8",
+  "ruff>=0.6",
+]
+
+[project.scripts]
+sophos-caa = "sophos_caa.cli:main"
+sophos-caa-manager = "sophos_caa.main:main"
+sophos-caa-indicator = "sophos_caa.ui.tray:main"
+sophos-caa-install = "sophos_caa.installer:main"
+sophos-caa-run = "sophos_caa.caa.runner:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/applications" = ["desktop/org.sophos.CAA.desktop"]
+"share/icons/hicolor/scalable/apps" = ["assets/icons/hicolor/scalable/apps/org.sophos.CAA.svg"]
+"share/icons/hicolor/symbolic/apps" = [
+  "assets/icons/hicolor/symbolic/apps/org.sophos.CAA-symbolic.svg",
+  "assets/icons/hicolor/symbolic/apps/org.sophos.CAA-connecting-symbolic.svg",
+  "assets/icons/hicolor/symbolic/apps/org.sophos.CAA-error-symbolic.svg",
+  "assets/icons/hicolor/symbolic/apps/org.sophos.CAA-inactive-symbolic.svg",
+]
+"lib/systemd/user" = [
+  "systemd/sophos-caa.service",
+  "systemd/sophos-caa-manager.service",
+  "systemd/sophos-caa-indicator.service",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["sophos_caa"]
+
+[[tool.mypy.overrides]]
+module = ["gi", "gi.*"]
+ignore_missing_imports = true
+

@@ -1,0 +1,7 @@
+include CHANGELOG.md CONTRIBUTING.md LICENSE README.md SECURITY.md
+recursive-include assets/icons *.svg
+recursive-include desktop *.desktop
+recursive-include systemd *.service
+recursive-include docs *.md
+recursive-include packaging *
+

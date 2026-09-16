@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+export PYBUILD_NAME = sophos-caa-manager
+export PYBUILD_SYSTEM = pyproject
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_installsystemduser:
+	dh_installsystemduser --no-enable --no-start

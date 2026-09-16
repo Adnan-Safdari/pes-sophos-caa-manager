@@ -1,0 +1,35 @@
+Source: sophos-caa-manager
+Section: net
+Priority: optional
+Maintainer: Sophos CAA Manager contributors <noreply@example.invalid>
+Homepage: https://github.com/Adnan-Safdari/pes-sophos-caa-manager
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-python,
+ pybuild-plugin-pyproject,
+ python3-all (>= 3.11),
+ python3-pytest,
+ python3-setuptools,
+ python3-wheel,
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+
+Package: sophos-caa-manager
+Architecture: all
+Depends:
+ gir1.2-ayatanaappindicator3-0.1,
+ gir1.2-glib-2.0,
+ gir1.2-gtk-3.0,
+ gir1.2-nm-1.0,
+ network-manager,
+ python3 (>= 3.11),
+ python3-gi,
+ systemd,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: unofficial Linux manager for Sophos Client Authentication Agent
+ Provides network-aware lifecycle management and a GTK/AppIndicator desktop
+ interface for a separately obtained Sophos Client Authentication Agent.
+ .
+ This package contains only the open source manager. It does not contain the
+ proprietary Sophos Client Authentication Agent.
