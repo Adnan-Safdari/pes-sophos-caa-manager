@@ -1,5 +1,3 @@
-
-
 # Sophos CAA Manager for Linux (PES RR)
 
 Stop repeating captive-portal logins. Keep the official Sophos Client
@@ -7,16 +5,22 @@ Authentication Agent running reliably in the background on Linux.
 
 Built for students at **PES University, Ring Road (RR) Campus**.
 
-[Python 3.11+](https://www.python.org/)
-[Linux](https://kernel.org/)
-[NetworkManager](https://networkmanager.dev/)
-[systemd](https://systemd.io/)
-[License: MIT](LICENSE)
+> [!IMPORTANT]
+> **PES IT policy disclaimer:** This project does not bypass or alter any PES  
+> network control. It adds a local management layer on top of the official  
+> Sophos Client Authentication Agent recommended for network authentication.  
+> It does not automate credential entry, evade session limits, or modify CAA.  
+> This project is unofficial and fully compliant with the PES University IT Policy
+
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Platform: Linux](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://kernel.org/)
+[![NetworkManager](https://img.shields.io/badge/Network-NetworkManager-6A42C2)](https://networkmanager.dev/)
+[![systemd user service](https://img.shields.io/badge/Service-systemd-5C2D91?logo=systemd&logoColor=white)](https://systemd.io/)
+[![GTK 3](https://img.shields.io/badge/Desktop-GTK%203-4A86CF?logo=gtk&logoColor=white)](https://www.gtk.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 [Get started](docs/getting-started.md) · [Features](#key-features) ·
 [Architecture](docs/architecture.md) · [Troubleshooting](docs/troubleshooting.md)
-
-
 
 ---
 
@@ -136,6 +140,8 @@ sophos-caa network
 sophos-caa logs
 sophos-caa show-indicator
 sophos-caa hide-indicator
+sophos-caa restart-indicator
+sophos-caa help
 ```
 
 ## Supported environments

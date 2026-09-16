@@ -9,7 +9,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from sophos_caa import __version__
 from sophos_caa.api import ManagerDBusClient
+from sophos_caa.config.config import Config
+
+PROJECT_URL = "https://github.com/Adnan-Safdari/pes-sophos-caa-manager"
+LICENSE_URL = f"{PROJECT_URL}/blob/main/LICENSE"
 
 
 class AlreadyRunningError(RuntimeError):
@@ -63,7 +68,7 @@ class Tray:
         self.status_item = self._label("CAA status: Unknown")
         self.authentication_item = self._label("Authentication: Unknown")
         self.network_item = self._label("Network: Unknown")
-        self.ip_item = self._label("IP: Unknown")
+        self.ip_item = self._label("IP: Unknown") if Config.load().show_ip_address else None
         self.portal_item = self._label("PES portal: Unknown")
         self._separator()
         self._action("Re-authenticate", "Reauthenticate")
@@ -146,13 +151,26 @@ class Tray:
     def _show_about(self) -> None:
         dialog = self.Gtk.AboutDialog()
         dialog.set_program_name("Sophos CAA Manager")
-        dialog.set_version("0.1.0")
+        dialog.set_version(__version__)
         dialog.set_logo_icon_name("org.sophos.CAA")
+        dialog.set_copyright("Copyright © 2026 Adnan Safdari and contributors")
+        dialog.set_authors(["Adnan Safdari", "Sophos CAA Manager contributors"])
         dialog.set_comments(
-            "Unofficial network-aware manager for the official Sophos CAA client.\n"
-            "Not affiliated with or endorsed by Sophos."
+            "Keeps the official Sophos Client Authentication Agent running in the "
+            "background and responds to network changes on Linux.\n\n"
+            "Built for PES University RR Campus. This utility does not bypass or "
+            "alter PES network controls; it only manages the recommended CAA client.\n\n"
+            "Independent and unofficial. Not affiliated with or endorsed by PES "
+            "University or Sophos."
         )
+        dialog.set_website(PROJECT_URL)
+        dialog.set_website_label("Project source and documentation")
         dialog.set_license_type(self.Gtk.License.MIT_X11)
+        dialog.set_wrap_license(True)
+        license_link = self.Gtk.LinkButton.new_with_label(LICENSE_URL, "View MIT License")
+        license_link.set_halign(self.Gtk.Align.CENTER)
+        dialog.get_content_area().pack_start(license_link, False, False, 4)
+        license_link.show()
         dialog.run()
         dialog.destroy()
 
@@ -182,7 +200,8 @@ class Tray:
         authentication = state["authentication"]
         self.authentication_item.set_label(f"Authentication: {authentication.title()}")
         self.network_item.set_label(f"Network: {network['connection_id'] or 'Disconnected'}")
-        self.ip_item.set_label(f"IP: {network['local_ipv4'] or '-'}")
+        if self.ip_item is not None:
+            self.ip_item.set_label(f"IP: {network['local_ipv4'] or '-'}")
         portal = "Reachable" if network["portal_reachable"] else "Not reachable"
         self.portal_item.set_label(f"PES portal: {portal}")
         self._updating = True

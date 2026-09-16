@@ -12,25 +12,39 @@ from sophos_caa.service.systemd import IndicatorController
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="sophos-caa", description="Manage Sophos CAA")
-    parser.add_argument(
-        "command",
-        choices=[
-            "status",
-            "start",
-            "stop",
-            "restart",
-            "reauth",
-            "enable-auto",
-            "disable-auto",
-            "network",
-            "logs",
-            "show-indicator",
-            "hide-indicator",
-            "restart-indicator",
-        ],
+    parser = argparse.ArgumentParser(
+        prog="sophos-caa",
+        description="Manage Sophos CAA authentication on Linux.",
+        epilog="Run 'sophos-caa COMMAND --help' for command-specific options.",
+        formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=28),
     )
-    parser.add_argument("-n", "--lines", type=int, default=100, help="journal lines for logs")
+    commands = parser.add_subparsers(dest="command", metavar="COMMAND", title="commands")
+    descriptions = {
+        "status": "Show CAA, authentication, and network status",
+        "start": "Start CAA with a manual override",
+        "stop": "Stop CAA with a manual override",
+        "restart": "Restart the CAA process",
+        "reauth": "Restart CAA to authenticate again",
+        "enable-auto": "Enable network-aware automation",
+        "disable-auto": "Disable network-aware automation",
+        "network": "Show the current network decision",
+        "show-indicator": "Start the desktop indicator",
+        "hide-indicator": "Stop the desktop indicator",
+        "restart-indicator": "Restart the desktop indicator",
+        "help": "Show this command list",
+        "list": "List available commands",
+    }
+    for name, description in descriptions.items():
+        commands.add_parser(name, help=description, description=description)
+    logs = commands.add_parser("logs", help="Show recent CAA and manager logs")
+    logs.add_argument(
+        "-n",
+        "--lines",
+        type=int,
+        default=100,
+        metavar="COUNT",
+        help="number of journal lines to show (default: 100)",
+    )
     return parser
 
 
@@ -74,7 +88,11 @@ def _logs(lines: int) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parser().parse_args(argv)
+    parser = _parser()
+    args = parser.parse_args(argv)
+    if args.command in {None, "help", "list"}:
+        parser.print_help()
+        return 0
     if args.command == "logs":
         return _logs(args.lines)
 

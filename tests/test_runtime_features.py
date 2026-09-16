@@ -208,3 +208,35 @@ def test_indicator_cli_lifecycle_does_not_open_ui_or_dbus(
     controller_class.assert_called_once_with()
     getattr(controller, method_name).assert_called_once_with()
     dbus_client.assert_not_called()
+
+
+def test_cli_help_lists_described_commands_without_crowded_choices() -> None:
+    help_text = cli._parser().format_help()
+
+    assert "usage: sophos-caa [-h] COMMAND ..." in help_text
+    assert "status" in help_text
+    assert "Show CAA, authentication, and network status" in help_text
+    assert "show-indicator" in help_text
+    assert "{status,start,stop" not in help_text
+
+
+@pytest.mark.parametrize("command", [[], ["help"], ["list"]])
+def test_cli_help_commands_do_not_connect_to_dbus(
+    command: list[str],
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    dbus_client = MagicMock(side_effect=AssertionError("D-Bus client should not be created"))
+    monkeypatch.setattr(cli, "ManagerDBusClient", dbus_client)
+
+    assert cli.main(command) == 0
+
+    assert "commands:" in capsys.readouterr().out
+    dbus_client.assert_not_called()
+
+
+def test_logs_line_limit_is_a_logs_subcommand_option() -> None:
+    args = cli._parser().parse_args(["logs", "--lines", "25"])
+
+    assert args.command == "logs"
+    assert args.lines == 25

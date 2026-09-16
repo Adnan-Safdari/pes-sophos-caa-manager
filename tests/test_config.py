@@ -17,6 +17,7 @@ def test_save_and_load_round_trip_with_restrictive_permissions(tmp_path: Path) -
         portal_port=18090,
         probe_timeout_seconds=0.75,
         caa_command='/opt/Sophos CAA/bin/caa "managed"',
+        show_ip_address=True,
         retry_seconds=(1, 7, 60),
     )
 
@@ -38,6 +39,7 @@ def test_save_replaces_an_insecure_existing_file_mode(tmp_path: Path) -> None:
 
 def test_load_missing_file_returns_defaults(tmp_path: Path) -> None:
     assert Config.load(tmp_path / "missing.toml") == Config()
+    assert Config().show_ip_address is False
 
 
 @pytest.mark.parametrize(

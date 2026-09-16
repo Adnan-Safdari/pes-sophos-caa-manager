@@ -156,6 +156,14 @@ sophos-caa restart-indicator
 
 ## 8. Use the CLI
 
+List commands and their descriptions:
+
+```bash
+sophos-caa help
+# Equivalent:
+sophos-caa --help
+```
+
 Status and network information:
 
 ```bash
@@ -183,6 +191,7 @@ Logs:
 
 ```bash
 sophos-caa logs
+sophos-caa logs --lines 250
 journalctl --user -u sophos-caa-manager
 journalctl --user -u sophos-caa
 ```
@@ -210,14 +219,24 @@ portal_host = "192.168.254.1"
 portal_port = 8090
 probe_timeout_seconds = 2
 
+[ui]
+show_ip_address = false
+
 [retry]
 seconds = [5, 10, 30, 60, 120]
 ```
 
-Restart the manager after editing:
+The desktop indicator hides the local IP address by default. Set
+`show_ip_address = true` to display it again.
+
+Restart the relevant component after editing:
 
 ```bash
+# Network or automation settings:
 systemctl --user restart sophos-caa-manager
+
+# UI settings:
+sophos-caa restart-indicator
 ```
 
 CAA credentials remain exclusively in the official CAA configuration under

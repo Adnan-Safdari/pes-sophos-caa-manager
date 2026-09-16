@@ -21,6 +21,7 @@ class Config:
     portal_port: int = 8090
     probe_timeout_seconds: float = 2.0
     caa_command: str = ""
+    show_ip_address: bool = False
     retry_seconds: tuple[int, ...] = field(default_factory=lambda: (5, 10, 30, 60, 120))
 
     @classmethod
@@ -33,6 +34,7 @@ class Config:
         manager = raw.get("manager", {})
         network = raw.get("network", {})
         caa = raw.get("caa", {})
+        ui = raw.get("ui", {})
         retry = raw.get("retry", {})
         config = cls(
             schema_version=int(manager.get("schema_version", 1)),
@@ -42,6 +44,7 @@ class Config:
             portal_port=int(network.get("portal_port", 8090)),
             probe_timeout_seconds=float(network.get("probe_timeout_seconds", 2)),
             caa_command=str(caa.get("command", "")),
+            show_ip_address=bool(ui.get("show_ip_address", False)),
             retry_seconds=tuple(int(value) for value in retry.get("seconds", [5, 10, 30, 60, 120])),
         )
         config.validate()
@@ -74,6 +77,8 @@ class Config:
             f'portal_host = "{self.portal_host}"\n'
             f"portal_port = {self.portal_port}\n"
             f"probe_timeout_seconds = {self.probe_timeout_seconds:g}\n\n"
+            "[ui]\n"
+            f"show_ip_address = {str(self.show_ip_address).lower()}\n\n"
             "[retry]\n"
             f"seconds = [{', '.join(str(value) for value in self.retry_seconds)}]\n"
         )
