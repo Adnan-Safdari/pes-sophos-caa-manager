@@ -92,9 +92,9 @@ changes.
 
 ## Demo
 
-▶ **[Watch the Sophos CAA Manager demo](https://github.com/Adnan-Safdari/pes-sophos-caa-manager/blob/main/docs/media/sophos-caa-manager-demo.webm)**
+▶ **[Watch the Sophos CAA Manager demo](https://github.com/Adnan-Safdari/pes-sophos-caa-manager/blob/main/docs/media/sophos-caa-manager-demo.mp4)**
 
-GitHub may open the WebM in its file viewer or offer it as a download,
+GitHub may open the MP4 in its file viewer or offer it as a download,
 depending on the browser.
 
 ## Key features
