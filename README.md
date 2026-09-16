@@ -112,7 +112,45 @@ https://github.com/user-attachments/assets/758bad38-89b6-45f7-a545-0e5a08aee838
 
 ## Quick start
 
-CAA must already be installed, configured, and working when run manually.
+### 1. Confirm that Sophos CAA works
+
+This manager does not redistribute or replace the proprietary CAA client. CAA
+must already be installed, configured, and able to authenticate when run
+manually:
+
+```bash
+command -v caa
+caa --version
+```
+
+If it is not installed, follow
+[Installing Sophos CAA on Linux](docs/installing-sophos-caa.md) first.
+
+### 2. Install system dependencies
+
+Ubuntu/Debian:
+
+```bash
+sudo apt update
+sudo apt install git python3 python3-venv python3-gi gir1.2-gtk-3.0 \
+  gir1.2-ayatanaappindicator3-0.1 network-manager
+```
+
+Fedora:
+
+```bash
+sudo dnf install git python3 python3-gobject gtk3 NetworkManager systemd \
+  libayatana-appindicator-gtk3
+```
+
+Arch Linux:
+
+```bash
+sudo pacman -S git python python-gobject gtk3 networkmanager systemd \
+  libayatana-appindicator
+```
+
+### 3. Install the manager
 
 ```bash
 git clone https://github.com/Adnan-Safdari/pes-sophos-caa-manager.git
@@ -120,16 +158,58 @@ cd pes-sophos-caa-manager
 python3 bootstrap.py
 ```
 
-If CAA is already running, installation leaves it untouched. Transfer control
-to the manager when a brief CAA restart is acceptable:
+The installer creates a private environment under
+`~/.local/share/sophos-caa-manager/`, installs user-level systemd services, and
+adds the desktop indicator. It does not require root.
+
+### 4. Transfer an existing CAA session
+
+If CAA is already running, the first installation leaves it untouched. When a
+brief authentication restart is acceptable, transfer control to the manager:
 
 ```bash
 python3 bootstrap.py --handover
 ```
 
-See the complete distro prerequisites, installation, verification, usage,
-configuration, upgrade, and removal steps in
-`[docs/getting-started.md](docs/getting-started.md)`.
+Do not continue running `caa` manually after this handover.
+
+### 5. Add the CLI to `PATH`
+
+For the current Bash session:
+
+```bash
+export PATH="$HOME/.local/share/sophos-caa-manager/venv/bin:$PATH"
+```
+
+Make it permanent:
+
+```bash
+grep -qxF 'export PATH="$HOME/.local/share/sophos-caa-manager/venv/bin:$PATH"' \
+  ~/.bashrc || \
+  echo 'export PATH="$HOME/.local/share/sophos-caa-manager/venv/bin:$PATH"' \
+  >> ~/.bashrc
+source ~/.bashrc
+```
+
+For another shell, add the same directory using that shell's startup file.
+
+### 6. Verify the installation
+
+```bash
+sophos-caa status
+systemctl --user status sophos-caa-manager
+systemctl --user status sophos-caa
+```
+
+The indicator starts automatically when its GTK/AppIndicator dependencies are
+available. If it was hidden, restore it with:
+
+```bash
+sophos-caa show-indicator
+```
+
+For upgrades, configuration, troubleshooting, and removal, see the complete
+[Getting started guide](docs/getting-started.md).
 
 ## Desktop controls
 
@@ -180,7 +260,7 @@ installations may require an AppIndicator/KStatusNotifierItem extension.
 Waybar and other frontends can use the same CLI and session D-Bus API.
 
 Distribution packaging templates are provided for Debian/Ubuntu, Fedora/RPM,
-and Arch Linux. See `[packaging/README.md](packaging/README.md)`.
+and Arch Linux. See [Distribution packaging](packaging/README.md).
 
 ## Documentation
 
@@ -201,7 +281,7 @@ The manager runs as the logged-in user and controls only a user service. It
 does not read or display `~/.caa/caa.conf`, transmit credentials, implement the
 Sophos protocol, expose a network socket, or use `shell=True`.
 
-See `[SECURITY.md](SECURITY.md)` for reporting and operational guidance.
+See the [Security policy](SECURITY.md) for reporting and operational guidance.
 
 ## Project status
 
